@@ -17,7 +17,6 @@ List.destroy_all
 Bookmark.destroy_all
 
 puts "Creating movies..."
-
 15.times do
   movie = Movie.new(
     title: Faker::Movie.title,
@@ -26,6 +25,14 @@ puts "Creating movies..."
     rating: rand(0..100)/10
   )
   movie.save
+end
+
+puts "Creating lists..."
+5.times do
+  list = List.new(
+    name: Faker::Music::RockBand.name
+  )
+  list.save
 end
 
 puts "Finished"

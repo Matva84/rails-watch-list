@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <h1>Add new bookmark</h1>
+
+      <%= simple_form_for [@bookmark] do |f| %>
+        <%= f.input :movie_id, collection: Movie.all, include_hidden: false %>
+        <%= f.input :comment%>
+        <%= f.submit "Add a new bookmark", class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>
