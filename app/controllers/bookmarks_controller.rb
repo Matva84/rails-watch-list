@@ -1,21 +1,28 @@
 class BookmarksController < ApplicationController
+  before_action :set_list, only: [:new, :create]
 
   def new
     @bookmark = Bookmark.new
-    @list = List.find(params[:list_id])
   end
 
   def create
-    raise
-    @movie = Movie.find(params[:movie_id])
-    @list = List.find(params[:list_id])
-    bookmark = Bookmark.new(movie: @movie, list: @list, comment: @comment)
-    bookmark.save
+    @bookmark = Bookmark.new(bookmark_params)
+    @bookmark.list = @list
+    if @bookmark.save
+      redirect_to list_path(@list)
+    else
+      render :new
+    end
   end
 
 private
 
   def bookmark_params
-    permit.require(:bookmark).params(:list_id)
+    params.require(:bookmark).permit(:comment, :movie_id)
   end
+
+  def set_list
+    @list = List.find(params[:list_id])
+  end
+
 end

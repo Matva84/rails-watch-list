@@ -1,4 +1,5 @@
 class ListsController < ApplicationController
+  before_action :set_list, only: [:show, :destroy]
 
   def index
     @list = List.all
@@ -9,23 +10,28 @@ class ListsController < ApplicationController
   end
 
   def show
-    @list = List.find(params[:id])
+    @bookmark = Bookmark.new
   end
 
   def create
     @list = List.new(list_params)
-    respond_to do |format|
       if @list.save
-        format.html { redirect_to lists_path, notice: "List was successfully created." }
-        format.json { render :show, status: :created, location: @list }
+        redirect_to list_path(@list)
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
+        render :new, status: :unprocessable_entity
       end
-    end
+  end
+
+  def destroy
+    @list.destroy
+    redirect_to lists_path, status: :see_other
   end
 
 private
+
+  def set_list
+    @list = List.find(params[:id])
+  end
 
   def list_params
     params.require(:list).permit(:name, :id)
